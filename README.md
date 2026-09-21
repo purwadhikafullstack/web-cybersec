@@ -2,7 +2,7 @@
 
 Dua aplikasi web yang **sengaja dibuat rentan** (deliberately vulnerable) untuk Final Project pentest siswa cybersecurity (JCCSAH-001). Lihat spesifikasi lengkap di [`docs/PRD-ecommerce.md`](docs/PRD-ecommerce.md) dan [`docs/PRD-event-ticketing.md`](docs/PRD-event-ticketing.md).
 
-> Status: **e-commerce selesai** (8/8 kerentanan terimplementasi & terverifikasi end-to-end, termasuk lewat browser). Lihat [`docs/INSTRUCTOR-ecommerce.md`](docs/INSTRUCTOR-ecommerce.md) untuk deploy, seed/reset, dan daftar flag per tenant. Event ticketing belum dikerjakan.
+> Status: **kedua aplikasi selesai** (8/8 kerentanan masing-masing, terimplementasi & terverifikasi end-to-end termasuk lewat browser). Lihat [`docs/INSTRUCTOR-ecommerce.md`](docs/INSTRUCTOR-ecommerce.md) dan [`docs/INSTRUCTOR-event-ticketing.md`](docs/INSTRUCTOR-event-ticketing.md) untuk deploy, seed/reset, dan daftar flag per tenant.
 
 ## Struktur
 

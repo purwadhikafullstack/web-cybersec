@@ -1,4 +1,6 @@
 import './globals.css';
+import { AuthProvider } from '../lib/auth-context';
+import Navbar from '../components/Navbar';
 
 export const metadata = {
   title: 'Event Ticketing (Dummy)',
@@ -8,7 +10,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AuthProvider>
+          <Navbar />
+          <main style={{ padding: '1.5rem', maxWidth: 960, margin: '0 auto' }}>{children}</main>
+        </AuthProvider>
+      </body>
     </html>
   );
 }
