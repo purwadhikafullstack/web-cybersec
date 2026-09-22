@@ -17,13 +17,25 @@ export default function OrdersPage() {
 
   return (
     <div>
-      <h1>Pesanan Saya</h1>
-      {orders.map((o) => (
-        <div key={o.id} style={{ borderBottom: '1px solid #eee', padding: '0.5rem 0' }}>
-          <Link href={`/orders/${o.id}`}>Order #{o.id}</Link> — Rp {Number(o.total).toLocaleString('id-ID')} — {o.status}
+      <div className="page-head" style={{ margin: '0 0 var(--s7)' }}>
+        <h1>Pesanan Saya</h1>
+      </div>
+
+      {orders.length === 0 ? (
+        <div className="empty-state">Belum ada pesanan.</div>
+      ) : (
+        <div className="list-card">
+          {orders.map((o) => (
+            <div key={o.id} className="list-row">
+              <div className="main">
+                <Link href={`/orders/${o.id}`}>Order #{o.id}</Link>
+                <div className="meta">Rp {Number(o.total).toLocaleString('id-ID')}</div>
+              </div>
+              <span className={`status-pill is-${o.status}`}>{o.status}</span>
+            </div>
+          ))}
         </div>
-      ))}
-      {orders.length === 0 && <p>Belum ada pesanan.</p>}
+      )}
     </div>
   );
 }

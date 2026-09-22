@@ -49,78 +49,120 @@ export default function AdminPage() {
 
   return (
     <div>
-      <h1>Admin Panel</h1>
+      <div className="page-head" style={{ margin: '0 0 var(--s7)' }}>
+        <h1>Admin Panel</h1>
+      </div>
 
       {user?.role === 'admin' ? (
-        <>
+        <div className="detail-section" style={{ marginTop: 0, paddingTop: 0, borderTop: 'none' }}>
           <h2>Buat Event</h2>
-          <form onSubmit={handleCreate} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxWidth: 420 }}>
-            <input
-              placeholder="Judul"
-              value={form.title}
-              onChange={(e) => setForm({ ...form, title: e.target.value })}
-              required
-            />
-            <textarea
-              placeholder="Deskripsi"
-              value={form.description}
-              onChange={(e) => setForm({ ...form, description: e.target.value })}
-            />
-            <input
-              type="datetime-local"
-              value={form.event_date}
-              onChange={(e) => setForm({ ...form, event_date: e.target.value })}
-              required
-            />
-            <input
-              type="number"
-              placeholder="Harga"
-              value={form.price}
-              onChange={(e) => setForm({ ...form, price: e.target.value })}
-              required
-            />
-            <input
-              type="number"
-              placeholder="Kuota kursi"
-              value={form.capacity}
-              onChange={(e) => setForm({ ...form, capacity: e.target.value })}
-              required
-            />
-            <button type="submit">Buat Event</button>
+          <form onSubmit={handleCreate} className="form-card" style={{ margin: 0 }}>
+            <div className="field">
+              <label>Judul</label>
+              <input
+                placeholder="Judul"
+                value={form.title}
+                onChange={(e) => setForm({ ...form, title: e.target.value })}
+                required
+              />
+            </div>
+            <div className="field">
+              <label>Deskripsi</label>
+              <textarea
+                placeholder="Deskripsi"
+                value={form.description}
+                onChange={(e) => setForm({ ...form, description: e.target.value })}
+              />
+            </div>
+            <div className="field">
+              <label>Tanggal & Waktu</label>
+              <input
+                type="datetime-local"
+                value={form.event_date}
+                onChange={(e) => setForm({ ...form, event_date: e.target.value })}
+                required
+              />
+            </div>
+            <div className="field-row">
+              <div className="field">
+                <label>Harga</label>
+                <input
+                  type="number"
+                  placeholder="Harga"
+                  value={form.price}
+                  onChange={(e) => setForm({ ...form, price: e.target.value })}
+                  required
+                />
+              </div>
+              <div className="field">
+                <label>Kuota kursi</label>
+                <input
+                  type="number"
+                  placeholder="Kuota kursi"
+                  value={form.capacity}
+                  onChange={(e) => setForm({ ...form, capacity: e.target.value })}
+                  required
+                />
+              </div>
+            </div>
+            <button type="submit" className="btn btn--indigo btn--block">Buat Event</button>
           </form>
           {createResult && (
-            <pre style={{ background: '#f5f5f5', padding: '0.75rem', overflowX: 'auto' }}>
-              {JSON.stringify(createResult, null, 2)}
-            </pre>
+            <pre className="result-box">{JSON.stringify(createResult, null, 2)}</pre>
           )}
-        </>
+        </div>
       ) : (
-        <p>Kamu login sebagai &quot;{user?.role}&quot; — form buat event hanya tampil untuk admin.</p>
+        <p className="alert alert--info">
+          Kamu login sebagai &quot;{user?.role}&quot; — form buat event hanya tampil untuk admin.
+        </p>
       )}
 
-      <h2>Sales Dashboard</h2>
-      {dashboardError && <p style={{ color: 'crimson' }}>{dashboardError}</p>}
-      {dashboard && (
-        <>
-          <p>{dashboard.message}</p>
-          {dashboard.flag && (
-            <p>
-              <strong>Flag:</strong> {dashboard.flag}
-            </p>
-          )}
-          <p>
-            Total tiket terjual: {dashboard.stats.ticket_count} — Revenue: Rp{' '}
-            {Number(dashboard.stats.revenue).toLocaleString('id-ID')}
-          </p>
-          <ul>
-            {dashboard.sales.map((s) => (
-              <li key={s.id}>
-                {s.ticket_code} — {s.event_title} — {s.buyer_email} — Rp {Number(s.price_paid).toLocaleString('id-ID')}
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
+      <div className="detail-section">
+        <h2>Sales Dashboard</h2>
+        {dashboardError && <p className="alert alert--error">{dashboardError}</p>}
+        {dashboard && (
+          <>
+            <p style={{ marginBottom: 'var(--s4)', color: 'var(--fg-soft)' }}>{dashboard.message}</p>
+            {dashboard.flag && (
+              <div className="flag-banner">
+                <strong>Flag:</strong> {dashboard.flag}
+              </div>
+            )}
+            <div className="stat-row">
+              <div className="stat-tile">
+                <div className="label">Tiket Terjual</div>
+                <div className="value">{dashboard.stats.ticket_count}</div>
+              </div>
+              <div className="stat-tile">
+                <div className="label">Revenue</div>
+                <div className="value">Rp {Number(dashboard.stats.revenue).toLocaleString('id-ID')}</div>
+              </div>
+            </div>
+            <div className="table-wrap">
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Kode Tiket</th>
+                    <th>Event</th>
+                    <th>Pembeli</th>
+                    <th>Harga</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {dashboard.sales.map((s) => (
+                    <tr key={s.id}>
+                      <td className="strong">{s.ticket_code}</td>
+                      <td>{s.event_title}</td>
+                      <td>{s.buyer_email}</td>
+                      <td>Rp {Number(s.price_paid).toLocaleString('id-ID')}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }

@@ -71,67 +71,78 @@ export default function EventDetailPage() {
     }
   }
 
-  if (loading || !user) return <p>Silakan login untuk melihat event.</p>;
-  if (error) return <p style={{ color: 'crimson' }}>{error}</p>;
-  if (!event) return <p>Loading...</p>;
+  if (loading || !user) return <p className="loading-state">Silakan login untuk melihat event.</p>;
+  if (error) return <p className="alert alert--error">{error}</p>;
+  if (!event) return <p className="loading-state">Loading...</p>;
 
   const seatsLeft = event.capacity - event.seats_booked;
 
   return (
     <div>
-      <h1>{event.title}</h1>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={event.banner_url} alt={event.title} style={{ maxWidth: 480 }} />
+      <div className="detail-layout">
+        <div className="detail-media">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={event.banner_url} alt={event.title} />
+        </div>
+        <div className="detail-info">
+          <h1>{event.title}</h1>
 
-      {/*
-        Vuln #6 (Stored XSS): description is rendered as raw HTML with no
-        sanitization, mirroring the backend which stores it verbatim.
-      */}
-      <div dangerouslySetInnerHTML={{ __html: event.description }} />
+          {/*
+            Vuln #6 (Stored XSS): description is rendered as raw HTML with no
+            sanitization, mirroring the backend which stores it verbatim.
+          */}
+          <div className="desc" dangerouslySetInnerHTML={{ __html: event.description }} />
 
-      <p>Tanggal: {new Date(event.event_date).toLocaleString('id-ID')}</p>
-      <p>Harga: Rp {Number(event.price).toLocaleString('id-ID')}</p>
-      <p>
-        Kursi: {seatsLeft} / {event.capacity} tersisa ({event.seats_booked} terpesan)
-      </p>
+          <div className="meta-row">
+            <span><strong>Tanggal:</strong> {new Date(event.event_date).toLocaleString('id-ID')}</span>
+          </div>
 
-      <h2>Pesan Tiket</h2>
-      <form onSubmit={handleBook} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
-        <label>
-          Jumlah:{' '}
-          <input type="number" value={quantity} onChange={(e) => setQuantity(e.target.value)} style={{ width: 60 }} />
-        </label>
-        <label>
-          Kode promo:{' '}
-          <input value={promoCode} onChange={(e) => setPromoCode(e.target.value)} placeholder="opsional" />
-        </label>
-        <button type="submit" disabled={booking}>
-          {booking ? 'Memproses...' : 'Pesan'}
-        </button>
-      </form>
-      {bookingResult && (
-        <pre style={{ background: '#f5f5f5', padding: '0.75rem', overflowX: 'auto' }}>
-          {JSON.stringify(bookingResult, null, 2)}
-        </pre>
-      )}
+          <div className="price-row">
+            <span className="now">Rp {Number(event.price).toLocaleString('id-ID')}</span>
+            <span className={`status-pill${seatsLeft <= 0 ? ' is-cancelled' : ' is-paid'}`}>
+              {seatsLeft} / {event.capacity} kursi tersisa
+            </span>
+          </div>
 
-      <h2>Set Banner dari URL</h2>
-      <form onSubmit={handleBannerFromUrl} style={{ display: 'flex', gap: '0.5rem' }}>
-        <input
-          value={bannerUrl}
-          onChange={(e) => setBannerUrl(e.target.value)}
-          placeholder="https://..."
-          style={{ flex: 1 }}
-        />
-        <button type="submit" disabled={fetching}>
-          {fetching ? 'Fetching...' : 'Set Banner'}
-        </button>
-      </form>
-      {fetchResult && (
-        <pre style={{ background: '#f5f5f5', padding: '0.75rem', overflowX: 'auto' }}>
-          {JSON.stringify(fetchResult, null, 2)}
-        </pre>
-      )}
+          <h2 style={{ fontSize: 'var(--text-lg)', marginBottom: 'var(--s3)' }}>Pesan Tiket</h2>
+          <form onSubmit={handleBook} className="inline-form">
+            <div className="field">
+              <label>Jumlah</label>
+              <input type="number" value={quantity} onChange={(e) => setQuantity(e.target.value)} />
+            </div>
+            <div className="field">
+              <label>Kode promo</label>
+              <input value={promoCode} onChange={(e) => setPromoCode(e.target.value)} placeholder="opsional" />
+            </div>
+            <button type="submit" className="btn btn--indigo" disabled={booking}>
+              {booking ? 'Memproses...' : 'Pesan'}
+            </button>
+          </form>
+          {bookingResult && (
+            <pre className="result-box">{JSON.stringify(bookingResult, null, 2)}</pre>
+          )}
+        </div>
+      </div>
+
+      <div className="detail-section">
+        <h2>Set Banner dari URL</h2>
+        <form onSubmit={handleBannerFromUrl} className="inline-form">
+          <div className="field" style={{ flex: 2 }}>
+            <label>URL Banner</label>
+            <input
+              value={bannerUrl}
+              onChange={(e) => setBannerUrl(e.target.value)}
+              placeholder="https://..."
+            />
+          </div>
+          <button type="submit" className="btn btn--ghost" disabled={fetching}>
+            {fetching ? 'Fetching...' : 'Set Banner'}
+          </button>
+        </form>
+        {fetchResult && (
+          <pre className="result-box">{JSON.stringify(fetchResult, null, 2)}</pre>
+        )}
+      </div>
     </div>
   );
 }

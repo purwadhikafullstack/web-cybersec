@@ -23,40 +23,45 @@ export default function CartPage() {
 
   return (
     <div>
-      <h1>Keranjang</h1>
-      {cart.length === 0 && (
-        <p>
+      <div className="page-head" style={{ margin: '0 0 var(--s7)' }}>
+        <h1>Keranjang</h1>
+      </div>
+
+      {cart.length === 0 ? (
+        <div className="empty-state">
           Keranjang kosong. <Link href="/">Belanja sekarang</Link>
-        </p>
-      )}
-      {cart.map((item) => (
-        <div
-          key={item.productId}
-          style={{ display: 'flex', gap: '1rem', alignItems: 'center', borderBottom: '1px solid #eee', padding: '0.5rem 0' }}
-        >
-          <span style={{ flex: 1 }}>{item.name}</span>
-          <span>Rp {item.price.toLocaleString('id-ID')}</span>
-          <input
-            type="number"
-            min="1"
-            value={item.quantity}
-            onChange={(e) => handleQtyChange(item.productId, e.target.value)}
-            style={{ width: 60 }}
-          />
-          <button type="button" onClick={() => handleRemove(item.productId)}>
-            Hapus
-          </button>
         </div>
-      ))}
-      {cart.length > 0 && (
-        <>
-          <p>
-            <strong>Total: Rp {total.toLocaleString('id-ID')}</strong>
-          </p>
-          <Link href="/checkout">
-            <button type="button">Checkout</button>
-          </Link>
-        </>
+      ) : (
+        <div className="cart-layout">
+          <div className="cart-list">
+            {cart.map((item) => (
+              <div key={item.productId} className="cart-row">
+                <span className="name">{item.name}</span>
+                <span className="price">Rp {item.price.toLocaleString('id-ID')}</span>
+                <div className="qty">
+                  <input
+                    type="number"
+                    min="1"
+                    value={item.quantity}
+                    onChange={(e) => handleQtyChange(item.productId, e.target.value)}
+                  />
+                </div>
+                <button type="button" className="remove" onClick={() => handleRemove(item.productId)} aria-label="Hapus">
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <div className="summary-card">
+            <h3>Ringkasan</h3>
+            <div className="summary-line is-total">
+              <span>Total</span>
+              <span>Rp {total.toLocaleString('id-ID')}</span>
+            </div>
+            <Link href="/checkout" className="btn btn--indigo">Checkout</Link>
+          </div>
+        </div>
       )}
     </div>
   );

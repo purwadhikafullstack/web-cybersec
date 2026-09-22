@@ -56,35 +56,52 @@ export default function CheckoutPage() {
   }
 
   if (cart.length === 0) {
-    return <p>Keranjang kosong.</p>;
+    return <div className="empty-state">Keranjang kosong.</div>;
   }
 
   return (
     <div>
-      <h1>Checkout</h1>
-      {cart.map((item) => (
-        <div key={item.productId}>
-          {item.name} x{item.quantity} — Rp {(item.price * item.quantity).toLocaleString('id-ID')}
-        </div>
-      ))}
-      <p>Subtotal: Rp {rawTotal.toLocaleString('id-ID')}</p>
-
-      <div style={{ display: 'flex', gap: '0.5rem', margin: '1rem 0' }}>
-        <input placeholder="Kode kupon" value={couponCode} onChange={(e) => setCouponCode(e.target.value)} />
-        <button type="button" onClick={handleApplyCoupon}>
-          Terapkan
-        </button>
+      <div className="page-head" style={{ margin: '0 0 var(--s7)' }}>
+        <h1>Checkout</h1>
       </div>
-      {couponPreview && (
-        <p>
-          Kupon &quot;{couponPreview.code}&quot; diterapkan: diskon {couponPreview.discount_percent}%
-        </p>
-      )}
-      {error && <p style={{ color: 'crimson' }}>{error}</p>}
 
-      <button type="button" onClick={handleCheckout} disabled={submitting}>
-        {submitting ? 'Memproses...' : 'Bayar sekarang'}
-      </button>
+      <div className="cart-layout">
+        <div className="cart-list">
+          {cart.map((item) => (
+            <div key={item.productId} className="list-row">
+              <div className="main">
+                <span className="name">{item.name} × {item.quantity}</span>
+              </div>
+              <span className="price">Rp {(item.price * item.quantity).toLocaleString('id-ID')}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="summary-card">
+          <h3>Ringkasan</h3>
+          <div className="summary-line">
+            <span>Subtotal</span>
+            <span>Rp {rawTotal.toLocaleString('id-ID')}</span>
+          </div>
+
+          <div className="promo-input">
+            <input placeholder="Kode kupon" value={couponCode} onChange={(e) => setCouponCode(e.target.value)} />
+            <button type="button" className="btn btn--ghost" onClick={handleApplyCoupon}>
+              Terapkan
+            </button>
+          </div>
+          {couponPreview && (
+            <p className="alert alert--success">
+              Kupon &quot;{couponPreview.code}&quot; diterapkan: diskon {couponPreview.discount_percent}%
+            </p>
+          )}
+          {error && <p className="alert alert--error">{error}</p>}
+
+          <button type="button" className="btn btn--indigo btn--block" onClick={handleCheckout} disabled={submitting}>
+            {submitting ? 'Memproses...' : 'Bayar sekarang'}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

@@ -38,20 +38,29 @@ export default function ProfilePage() {
     }
   }
 
-  if (loading) return <p>Loading...</p>;
-  if (!user) return <p>Silakan login.</p>;
+  if (loading) return <p className="loading-state">Loading...</p>;
+  if (!user) return <p className="loading-state">Silakan login.</p>;
 
   return (
-    <div>
+    <div className="form-card">
       <h1>Profil</h1>
-      <p>Email: {user.email} (tidak bisa diubah)</p>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxWidth: 360 }}>
-        <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Nama" />
-        <input value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Alamat" />
-        <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Telepon" />
-        <button type="submit">Simpan</button>
+      <p className="sub">Email: {user.email} (tidak bisa diubah)</p>
+      <form onSubmit={handleSubmit}>
+        <div className="field">
+          <label>Nama</label>
+          <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Nama" />
+        </div>
+        <div className="field">
+          <label>Alamat</label>
+          <input value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Alamat" />
+        </div>
+        <div className="field">
+          <label>Telepon</label>
+          <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Telepon" />
+        </div>
+        <button type="submit" className="btn btn--indigo btn--block">Simpan</button>
       </form>
-      {message && <p>{message}</p>}
+      {message && <p className="alert alert--info">{message}</p>}
     </div>
   );
 }

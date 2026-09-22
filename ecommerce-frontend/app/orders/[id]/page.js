@@ -18,22 +18,30 @@ export default function OrderDetailPage() {
     })();
   }, [id]);
 
-  if (error) return <p style={{ color: 'crimson' }}>{error}</p>;
-  if (!order) return <p>Loading...</p>;
+  if (error) return <p className="alert alert--error">{error}</p>;
+  if (!order) return <p className="loading-state">Loading...</p>;
 
   return (
     <div>
-      <h1>Order #{order.id}</h1>
-      <p>Status: {order.status}</p>
-      <p>Total: Rp {Number(order.total).toLocaleString('id-ID')}</p>
-      {order.note && <p>Catatan: {order.note}</p>}
-      <ul>
+      <div className="page-head" style={{ margin: '0 0 var(--s7)' }}>
+        <h1>Order #{order.id}</h1>
+        <p>
+          <span className={`status-pill is-${order.status}`}>{order.status}</span>
+          {'  '}Total: Rp {Number(order.total).toLocaleString('id-ID')}
+        </p>
+        {order.note && <p>Catatan: {order.note}</p>}
+      </div>
+
+      <div className="list-card">
         {order.items.map((it) => (
-          <li key={it.id}>
-            {it.product_name} x{it.quantity} — Rp {Number(it.unit_price).toLocaleString('id-ID')}
-          </li>
+          <div key={it.id} className="list-row">
+            <div className="main">
+              <span className="name">{it.product_name} × {it.quantity}</span>
+            </div>
+            <span className="price">Rp {Number(it.unit_price).toLocaleString('id-ID')}</span>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

@@ -17,16 +17,24 @@ export default function TicketsPage() {
 
   return (
     <div>
-      <h1>My Tickets</h1>
-      {tickets.map((t) => (
-        <div key={t.id} style={{ borderBottom: '1px solid #eee', padding: '0.5rem 0' }}>
-          <Link href={`/tickets/${t.id}`}>
-            {t.event_title} — {t.ticket_code}
-          </Link>{' '}
-          — Rp {Number(t.price_paid).toLocaleString('id-ID')}
+      <div className="page-head" style={{ margin: '0 0 var(--s7)' }}>
+        <h1>My Tickets</h1>
+      </div>
+
+      {tickets.length === 0 ? (
+        <div className="empty-state">Belum ada tiket.</div>
+      ) : (
+        <div className="list-card">
+          {tickets.map((t) => (
+            <div key={t.id} className="list-row">
+              <div className="main">
+                <Link href={`/tickets/${t.id}`}>{t.event_title} — {t.ticket_code}</Link>
+              </div>
+              <span className="price">Rp {Number(t.price_paid).toLocaleString('id-ID')}</span>
+            </div>
+          ))}
         </div>
-      ))}
-      {tickets.length === 0 && <p>Belum ada tiket.</p>}
+      )}
     </div>
   );
 }

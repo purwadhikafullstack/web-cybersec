@@ -18,18 +18,23 @@ export default function TicketDetailPage() {
     })();
   }, [id]);
 
-  if (error) return <p style={{ color: 'crimson' }}>{error}</p>;
-  if (!ticket) return <p>Loading...</p>;
+  if (error) return <p className="alert alert--error">{error}</p>;
+  if (!ticket) return <p className="loading-state">Loading...</p>;
 
   return (
-    <div>
+    <div className="form-card" style={{ maxWidth: 480 }}>
       <h1>Tiket #{ticket.id}</h1>
-      <p>Event: {ticket.event_title}</p>
-      <p>
-        Kode tiket: <strong>{ticket.ticket_code}</strong>
-      </p>
-      <p>Harga dibayar: Rp {Number(ticket.price_paid).toLocaleString('id-ID')}</p>
-      {ticket.note && <p>Catatan: {ticket.note}</p>}
+      <p className="sub">{ticket.event_title}</p>
+
+      <div className="summary-line">
+        <span>Kode tiket</span>
+        <strong>{ticket.ticket_code}</strong>
+      </div>
+      <div className="summary-line is-total">
+        <span>Harga dibayar</span>
+        <span>Rp {Number(ticket.price_paid).toLocaleString('id-ID')}</span>
+      </div>
+      {ticket.note && <p className="alert alert--info">Catatan: {ticket.note}</p>}
     </div>
   );
 }

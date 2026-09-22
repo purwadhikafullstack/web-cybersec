@@ -44,76 +44,148 @@ export default function AdminPage() {
     }
   }
 
-  if (error) return <p style={{ color: 'crimson' }}>{error}</p>;
-  if (!dashboard) return <p>Loading...</p>;
+  if (error) return <p className="alert alert--error">{error}</p>;
+  if (!dashboard) return <p className="loading-state">Loading...</p>;
 
   return (
     <div>
-      <h1>Admin Panel</h1>
-      <p>{dashboard.message}</p>
+      <div className="page-head" style={{ margin: '0 0 var(--s6)' }}>
+        <h1>Admin Panel</h1>
+        <p>{dashboard.message}</p>
+      </div>
+
       {dashboard.flag && (
-        <p>
+        <div className="flag-banner">
           <strong>Flag:</strong> {dashboard.flag}
-        </p>
+        </div>
       )}
-      <p>
-        Users: {dashboard.stats.userCount} — Orders: {dashboard.stats.orderCount} — Revenue: Rp{' '}
-        {Number(dashboard.stats.revenue).toLocaleString('id-ID')}
-      </p>
 
-      <h2>Kupon</h2>
-      <ul>
-        {dashboard.coupons.map((c) => (
-          <li key={c.code}>
-            {c.code} — {c.discount_percent}% — {c.note}
-          </li>
-        ))}
-      </ul>
+      <div className="stat-row">
+        <div className="stat-tile">
+          <div className="label">Users</div>
+          <div className="value">{dashboard.stats.userCount}</div>
+        </div>
+        <div className="stat-tile">
+          <div className="label">Orders</div>
+          <div className="value">{dashboard.stats.orderCount}</div>
+        </div>
+        <div className="stat-tile">
+          <div className="label">Revenue</div>
+          <div className="value">Rp {Number(dashboard.stats.revenue).toLocaleString('id-ID')}</div>
+        </div>
+      </div>
 
-      <h2>Kelola Produk</h2>
-      <form onSubmit={handleCreateProduct} style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
-        <input
-          placeholder="Nama"
-          value={newProduct.name}
-          onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-          required
-        />
-        <input
-          placeholder="Harga"
-          type="number"
-          value={newProduct.price}
-          onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
-          required
-        />
-        <input
-          placeholder="Stok"
-          type="number"
-          value={newProduct.stock}
-          onChange={(e) => setNewProduct({ ...newProduct, stock: e.target.value })}
-        />
-        <input
-          placeholder="Deskripsi"
-          value={newProduct.description}
-          onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
-        />
-        <button type="submit">Tambah Produk</button>
-      </form>
-      <ul>
-        {products.map((p) => (
-          <li key={p.id}>
-            {p.name} — Rp {Number(p.price).toLocaleString('id-ID')} (stok {p.stock})
-          </li>
-        ))}
-      </ul>
+      <div className="detail-section" style={{ marginTop: 0, paddingTop: 0, borderTop: 'none' }}>
+        <h2>Kupon</h2>
+        <div className="table-wrap">
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Kode</th>
+                <th>Diskon</th>
+                <th>Catatan</th>
+              </tr>
+            </thead>
+            <tbody>
+              {dashboard.coupons.map((c) => (
+                <tr key={c.code}>
+                  <td className="strong">{c.code}</td>
+                  <td>{c.discount_percent}%</td>
+                  <td>{c.note}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-      <h2>Semua Order (tenant ini)</h2>
-      <ul>
-        {orders.map((o) => (
-          <li key={o.id}>
-            #{o.id} — {o.user_email} — Rp {Number(o.total).toLocaleString('id-ID')}
-          </li>
-        ))}
-      </ul>
+      <div className="detail-section">
+        <h2>Kelola Produk</h2>
+        <form onSubmit={handleCreateProduct} className="inline-form" style={{ marginBottom: 'var(--s6)' }}>
+          <div className="field">
+            <label>Nama</label>
+            <input
+              placeholder="Nama"
+              value={newProduct.name}
+              onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
+              required
+            />
+          </div>
+          <div className="field">
+            <label>Harga</label>
+            <input
+              placeholder="Harga"
+              type="number"
+              value={newProduct.price}
+              onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
+              required
+            />
+          </div>
+          <div className="field">
+            <label>Stok</label>
+            <input
+              placeholder="Stok"
+              type="number"
+              value={newProduct.stock}
+              onChange={(e) => setNewProduct({ ...newProduct, stock: e.target.value })}
+            />
+          </div>
+          <div className="field">
+            <label>Deskripsi</label>
+            <input
+              placeholder="Deskripsi"
+              value={newProduct.description}
+              onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
+            />
+          </div>
+          <button type="submit" className="btn btn--indigo">Tambah Produk</button>
+        </form>
+
+        <div className="table-wrap">
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Nama</th>
+                <th>Harga</th>
+                <th>Stok</th>
+              </tr>
+            </thead>
+            <tbody>
+              {products.map((p) => (
+                <tr key={p.id}>
+                  <td className="strong">{p.name}</td>
+                  <td>Rp {Number(p.price).toLocaleString('id-ID')}</td>
+                  <td>{p.stock}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="detail-section">
+        <h2>Semua Order (tenant ini)</h2>
+        <div className="table-wrap">
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Email</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map((o) => (
+                <tr key={o.id}>
+                  <td className="strong">#{o.id}</td>
+                  <td>{o.user_email}</td>
+                  <td>Rp {Number(o.total).toLocaleString('id-ID')}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }
