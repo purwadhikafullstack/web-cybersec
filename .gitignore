@@ -6,3 +6,6 @@
 **/.env*.local
 **/*.log
 .DS_Store
+
+
+Sprylo-1.0.0
