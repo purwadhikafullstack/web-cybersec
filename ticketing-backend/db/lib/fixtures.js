@@ -13,7 +13,7 @@ function eventFixtures() {
       event_date: daysFromNow(30),
       price: 250000,
       capacity: 200,
-      banner_url: 'https://picsum.photos/seed/musicfest/800/400',
+      banner_url: '/events/jakarta-indie-music-fest.png',
     },
     {
       title: 'Tech Conference: Cloud & Security',
@@ -21,7 +21,7 @@ function eventFixtures() {
       event_date: daysFromNow(45),
       price: 500000,
       capacity: 150,
-      banner_url: 'https://picsum.photos/seed/techconf/800/400',
+      banner_url: '/events/tech-conference-cloud-security.png',
     },
     {
       title: 'Stand-up Comedy Night',
@@ -29,7 +29,7 @@ function eventFixtures() {
       event_date: daysFromNow(14),
       price: 150000,
       capacity: 80,
-      banner_url: 'https://picsum.photos/seed/comedy/800/400',
+      banner_url: '/events/standup-comedy-night.png',
     },
     {
       // Deliberately tiny capacity so overselling (vuln #2) is easy to
@@ -39,7 +39,7 @@ function eventFixtures() {
       event_date: daysFromNow(7),
       price: 1000000,
       capacity: 5,
-      banner_url: 'https://picsum.photos/seed/flashsale/800/400',
+      banner_url: '/events/flash-sale-vip-meet-greet.png',
     },
   ];
 }
